@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.tech.challenge.servicos.ClienteServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-10-30T01:51:13" hostname="L&#x90;IA" time="0.048">
+  <properties/>
+  <testcase name="Não deve existir um cliente com o id informado" classname="br.com.tech.challenge.servicos.ClienteServiceTest" time="0.029"/>
+  <testcase name="Deve existir um cliente com o id informado" classname="br.com.tech.challenge.servicos.ClienteServiceTest" time="0.002"/>
+  <testcase name="Deve criar um cliente com sucesso somente com cpf" classname="br.com.tech.challenge.servicos.ClienteServiceTest" time="0.005"/>
+  <testcase name="Deve criar um cliente com sucesso" classname="br.com.tech.challenge.servicos.ClienteServiceTest" time="0.004"/>
+  <testcase name="Deve retornar exceção ao tentar criar um cliente que já possui cadastro" classname="br.com.tech.challenge.servicos.ClienteServiceTest" time="0.001"/>
+  <testcase name="Deve retornar exceção ao tentar criar um cliente que já possui cadastro" classname="br.com.tech.challenge.servicos.ClienteServiceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

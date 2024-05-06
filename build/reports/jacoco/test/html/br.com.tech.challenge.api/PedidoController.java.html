@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PedidoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">br.com.tech.challenge.api</a> &gt; <span class="el_source">PedidoController.java</span></div><h1>PedidoController.java</h1><pre class="source lang-java linenums">package br.com.tech.challenge.api;
+
+import br.com.tech.challenge.domain.dto.FilaPedidosDTO;
+import br.com.tech.challenge.domain.dto.PedidoDTO;
+import br.com.tech.challenge.domain.dto.StatusPedidoDTO;
+import br.com.tech.challenge.servicos.FilaPedidosService;
+import br.com.tech.challenge.servicos.PedidoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
+
+import static org.springframework.http.HttpStatus.CREATED;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(&quot;/pedidos&quot;)
+@Tag(name = &quot;Pedidos&quot;, description = &quot;Endpoints para controle de Pedidos&quot;)
+public class PedidoController {
+
+    private final PedidoService pedidoService;
+
+    private final FilaPedidosService filaPedidosService;
+
+    private final ModelMapper mapper;
+
+    @Operation(description = &quot;Endpoint para criar um Pedido&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;Pedido criado com sucesso.&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Pedido invÃ¡lido.&quot;),
+            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Ocorreu um erro no servidor.&quot;)
+    })
+    @PostMapping
+    public ResponseEntity&lt;PedidoDTO&gt; save(@RequestBody PedidoDTO pedidoDTO) {
+<span class="fc" id="L53">        return ResponseEntity.status(CREATED).body(mapper.map(pedidoService.save(pedidoDTO), PedidoDTO.class));</span>
+    }
+
+    @Operation(summary = &quot;Lista a fila de pedidos&quot;, description = &quot;Endpoint para listagem da fila de pedidos&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Fila de pedidos retornada com sucesso.&quot;,
+                    content = {
+                            @Content(mediaType = &quot;application/json&quot;,
+                                    array = @ArraySchema(schema = @Schema(implementation = FilaPedidosDTO.class)))
+                    }),
+            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Ocorreu um erro no servidor.&quot;)
+    })
+    @GetMapping(value = &quot;/fila&quot;)
+    public ResponseEntity&lt;Page&lt;FilaPedidosDTO&gt;&gt; listFilaPedidos(
+            @RequestParam(name = &quot;pagina&quot;, defaultValue = &quot;0&quot;) int pagina,
+            @RequestParam(name = &quot;tamanho&quot;, defaultValue = &quot;10&quot;) int tamanho) {
+<span class="fc" id="L69">        return ResponseEntity.ok().body(filaPedidosService.listFilaPedidos(pagina, tamanho)</span>
+<span class="fc" id="L70">                .map(pedido -&gt; mapper.map(pedido, FilaPedidosDTO.class))</span>
+        );
+    }
+
+    @Operation(description = &quot;Endpoint para listar Pedidos&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Pedidos retornados sucesso.&quot;, content = {
+                    @Content(mediaType = &quot;application/json&quot;,
+                            array = @ArraySchema(schema = @Schema(implementation = PedidoDTO.class)))
+            }),
+            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Ocorreu um erro no servidor.&quot;)
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;Page&lt;PedidoDTO&gt;&gt; listarPedidos(
+            @RequestParam(name = &quot;pagina&quot;, defaultValue = &quot;0&quot;) int pagina,
+            @RequestParam(name = &quot;tamanho&quot;, defaultValue = &quot;10&quot;) int tamanho
+    ) {
+
+<span class="fc" id="L88">        return ResponseEntity.ok(pedidoService.list(pagina, tamanho));</span>
+    }
+
+    @Operation(description = &quot;Endpoint para atualizar status de um pedido&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;204&quot;, description = &quot;Pedido atualizado com sucesso.&quot;, content = {
+                    @Content(mediaType = &quot;application/json&quot;,
+                            schema = @Schema(implementation = PedidoDTO.class))
+            }),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Status invÃ¡lido&quot;),
+            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Ocorreu um erro no servidor.&quot;)
+    }
+    )
+    @PutMapping(&quot;/{pedidoId}/status&quot;)
+    public ResponseEntity&lt;PedidoDTO&gt; updateStatus(@PathVariable Long pedidoId, @RequestBody StatusPedidoDTO statusPedidoDTO) {
+
+<span class="fc" id="L104">        return ResponseEntity.ok(pedidoService.updateStatus(pedidoId, statusPedidoDTO));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

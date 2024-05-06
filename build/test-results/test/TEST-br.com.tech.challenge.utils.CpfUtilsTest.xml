@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.tech.challenge.utils.CpfUtilsTest" tests="30" skipped="0" failures="0" errors="0" timestamp="2023-10-30T01:51:14" hostname="L&#x90;IA" time="0.034">
+  <properties/>
+  <testcase name="[1] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.002"/>
+  <testcase name="[2] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[3] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[4] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[5] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[6] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[7] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[8] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[9] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[10] " classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[1] cpf=865.180.830-50" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.011"/>
+  <testcase name="[2] cpf=446.638.660-93" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[3] cpf=915.667.230-60" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[4] cpf=901.098.680-21" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[5] cpf=601.250.630-91" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[6] cpf=240.985.070-72" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[7] cpf=523.611.070-07" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[8] cpf=538.726.150-25" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[9] cpf=019.366.860-23" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[10] cpf=640.665.870-11" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[1] cpf=86518083050, formattedCpf=865.180.830-50" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[2] cpf=44663866093, formattedCpf=446.638.660-93" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[3] cpf=91566723060, formattedCpf=915.667.230-60" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[4] cpf=90109868021, formattedCpf=901.098.680-21" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[5] cpf=60125063091, formattedCpf=601.250.630-91" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[6] cpf=24098507072, formattedCpf=240.985.070-72" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[7] cpf=52361107007, formattedCpf=523.611.070-07" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[8] cpf=53872615025, formattedCpf=538.726.150-25" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.0"/>
+  <testcase name="[9] cpf=01936686023, formattedCpf=019.366.860-23" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <testcase name="[10] cpf=64066587011, formattedCpf=640.665.870-11" classname="br.com.tech.challenge.utils.CpfUtilsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

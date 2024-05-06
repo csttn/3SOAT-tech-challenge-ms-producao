@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.tech.challenge.servicos.ProdutoServiceTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2023-10-30T01:51:14" hostname="L&#x90;IA" time="0.011">
+  <properties/>
+  <testcase name="Deve deletar um produto com sucesso" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve encontrar o produto pelo id" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve listar produto por id com sucesso" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve retornar exceção ao tentar deletar um produto inexistente" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve listar produtos com sucesso" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.0"/>
+  <testcase name="Deve listar produtos vazios com sucesso" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.0"/>
+  <testcase name="Deve retornar exceção ao tentar alterar um produto inexistente" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve contar a quantidade de produtos por id na lista corretamente" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve alterar um produto com sucesso" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <testcase name="Deve criar um produto com sucesso" classname="br.com.tech.challenge.servicos.ProdutoServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

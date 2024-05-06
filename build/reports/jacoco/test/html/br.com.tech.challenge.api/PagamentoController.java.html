@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PagamentoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tech-challenge</a> &gt; <a href="index.source.html" class="el_package">br.com.tech.challenge.api</a> &gt; <span class="el_source">PagamentoController.java</span></div><h1>PagamentoController.java</h1><pre class="source lang-java linenums">package br.com.tech.challenge.api;
+
+import br.com.tech.challenge.domain.dto.PagamentoDTO;
+import br.com.tech.challenge.domain.dto.external.MercadoPagoResponseDTO;
+import br.com.tech.challenge.servicos.PagamentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(&quot;/pagamentos&quot;)
+@Tag(name = &quot;Pagamentos&quot;, description = &quot;Endpoints para efetuar Pagamentos&quot;)
+public class PagamentoController {
+
+    private final PagamentoService pagamentoService;
+
+    private final ModelMapper mapper;
+
+    @Operation(description = &quot;Endpoint para gerar um cÃ³digo QR (futuramente)&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;CÃ³digo QR criado com sucesso.&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;InformaÃ§Ãµes de pagamento invÃ¡lidas.&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Pedido nÃ£o encontrado.&quot;),
+            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Ocorreu um erro no servidor.&quot;)
+    })
+    @PostMapping(&quot;/pedido/{idPedido}/qr&quot;)
+    public ResponseEntity&lt;MercadoPagoResponseDTO&gt; generateQRCode(@PathVariable(&quot;idPedido&quot;) Long id) {
+<span class="nc" id="L37">        return ResponseEntity.ok().body(pagamentoService.generateQRCode(id));</span>
+    }
+
+    @Operation(description = &quot;Endpoint para realizar o checkout&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Pagamento realizado com sucesso.&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Pedido nÃ£o encontrado.&quot;),
+            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;Ocorreu um erro no servidor.&quot;)
+    })
+    @PostMapping(&quot;/pedido/{idPedido}/checkout&quot;)
+    public ResponseEntity&lt;PagamentoDTO&gt; checkout(@PathVariable(&quot;idPedido&quot;) Long id) {
+<span class="fc" id="L48">        var pagamento = pagamentoService.checkout(id);</span>
+<span class="fc" id="L49">        return ResponseEntity.ok().body(mapper.map(pagamento, PagamentoDTO.class));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

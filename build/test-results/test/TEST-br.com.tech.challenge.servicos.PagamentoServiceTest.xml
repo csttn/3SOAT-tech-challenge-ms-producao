@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.com.tech.challenge.servicos.PagamentoServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-30T01:51:14" hostname="L&#x90;IA" time="0.005">
+  <properties/>
+  <testcase name="Deve fazer o checkout" classname="br.com.tech.challenge.servicos.PagamentoServiceTest" time="0.002"/>
+  <testcase name="Deve criar um pagamento com sucesso" classname="br.com.tech.challenge.servicos.PagamentoServiceTest" time="0.001"/>
+  <testcase name="Deve encontrar o pagamento pelo id do pedido" classname="br.com.tech.challenge.servicos.PagamentoServiceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
