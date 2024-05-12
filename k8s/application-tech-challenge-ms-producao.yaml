@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tech-challenge-java-ms-producao
+  labels:
+    app: tech-challenge-java-ms-producao
+  annotations:
+    author: G8 - 3SOAT/2023
+    name: tech-challenge-service
+    description: "This is the java springboot service for Tech Challenge"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tech-challenge-java-ms-producao
+  template:
+    metadata:
+      labels:
+        app: tech-challenge-java-ms-producao
+    spec:
+      containers:
+      - name: tech-challenge-java-ms-producao
+        image: stylefelix/tech-challenge-ms-producao-kubernetes:latest
+        ports:
+          - containerPort: 8081
+            protocol: TCP
+        resources:
+          limits:
+            memory: "400Mi"
+            cpu: "90m"
+          requests:
+            memory: "400Mi"
+        readinessProbe:
+          httpGet:
+            port: 8081
+          initialDelaySeconds: 180
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            port: 8081
+          initialDelaySeconds: 500
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 180
+          failureThreshold: 30
+          periodSeconds: 10
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-tech-challenge-java-ms-producao
+spec:
+  selector:
+    app: tech-challenge-java-ms-producao
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8081
+      nodePort: 31808
+  type: LoadBalancer
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tech-challenge-java-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tech-challenge-java-ms-producao
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60

@@ -1,7 +1,11 @@
-package br.com.tech.challenge.bd.repositorios;
+package br.com.tech.challenge.ms.producao.bd.repositorios;
 
-import br.com.tech.challenge.domain.entidades.FilaPedidos;
-import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.tech.challenge.ms.producao.domain.dto.external.FilaPedidosDTO;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FilaPedidosRepository extends JpaRepository<FilaPedidos, Long> {
+@Repository
+public interface FilaPedidosRepository extends MongoRepository<FilaPedidosDTO, String> {
+    void deleteAllById(Long id);
 }
+

@@ -1,13 +1,13 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.api.exception.UsuarioAlreadyExistsException;
-import br.com.tech.challenge.bd.repositorios.UsuarioRepository;
-import br.com.tech.challenge.domain.dto.CredencialDTO;
-import br.com.tech.challenge.domain.dto.TokenDTO;
-import br.com.tech.challenge.domain.dto.UsuarioDTO;
-import br.com.tech.challenge.domain.entidades.Usuario;
-import br.com.tech.challenge.domain.enums.Role;
-import br.com.tech.challenge.utils.PasswordUtils;
+
+import br.com.tech.challenge.ms.producao.api.exception.UsuarioAlreadyExistsException;
+import br.com.tech.challenge.ms.producao.bd.repositorios.UsuarioRepository;
+import br.com.tech.challenge.ms.producao.domain.dto.CredencialDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.TokenDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.UsuarioDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.Usuario;
+import br.com.tech.challenge.ms.producao.domain.enums.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -59,7 +59,7 @@ class UsuarioServiceTest {
 
         var usuarioDTO = setUsuarioDto();
 
-        when(mapper.map(usuarioDTO,Usuario.class)).thenReturn(usuarioSalvo);
+        when(mapper.map(usuarioDTO, Usuario.class)).thenReturn(usuarioSalvo);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioSalvo);
 
         var usuarioRetornado = usuarioService.save(usuarioDTO);

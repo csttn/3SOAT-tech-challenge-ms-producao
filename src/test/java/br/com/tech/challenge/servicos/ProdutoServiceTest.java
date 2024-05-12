@@ -1,11 +1,13 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.api.exception.ObjectNotFoundException;
-import br.com.tech.challenge.bd.repositorios.ProdutoRepository;
-import br.com.tech.challenge.domain.dto.ProdutoDTO;
-import br.com.tech.challenge.domain.dto.ProdutoUpdateDTO;
-import br.com.tech.challenge.domain.entidades.Categoria;
-import br.com.tech.challenge.domain.entidades.Produto;
+
+import br.com.tech.challenge.ms.producao.api.exception.ObjectNotFoundException;
+import br.com.tech.challenge.ms.producao.bd.repositorios.ProdutoRepository;
+import br.com.tech.challenge.ms.producao.domain.dto.ProdutoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.ProdutoUpdateDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.Categoria;
+import br.com.tech.challenge.ms.producao.domain.entidades.Produto;
+import br.com.tech.challenge.ms.producao.servicos.ProdutoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

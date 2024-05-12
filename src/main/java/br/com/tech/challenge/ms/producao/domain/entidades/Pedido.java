@@ -1,6 +1,6 @@
-package br.com.tech.challenge.domain.entidades;
+package br.com.tech.challenge.ms.producao.domain.entidades;
 
-import br.com.tech.challenge.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

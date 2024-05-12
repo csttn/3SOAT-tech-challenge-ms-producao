@@ -1,11 +1,12 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.api.client.MercadoPagoClient;
-import br.com.tech.challenge.bd.repositorios.PagamentoRepository;
-import br.com.tech.challenge.bd.repositorios.PedidoRepository;
-import br.com.tech.challenge.domain.entidades.*;
-import br.com.tech.challenge.domain.enums.StatusPagamento;
-import br.com.tech.challenge.domain.enums.StatusPedido;
+
+import br.com.tech.challenge.ms.producao.bd.repositorios.PagamentoRepository;
+import br.com.tech.challenge.ms.producao.bd.repositorios.PedidoRepository;
+import br.com.tech.challenge.ms.producao.domain.entidades.*;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.servicos.PagamentoService;
+import br.com.tech.challenge.ms.producao.servicos.ProdutoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

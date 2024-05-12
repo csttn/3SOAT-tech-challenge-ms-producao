@@ -1,6 +1,6 @@
-package br.com.tech.challenge.bd.repositorios;
+package br.com.tech.challenge.ms.producao.bd.repositorios;
 
-import br.com.tech.challenge.domain.entidades.Pedido;
+import br.com.tech.challenge.ms.producao.domain.entidades.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

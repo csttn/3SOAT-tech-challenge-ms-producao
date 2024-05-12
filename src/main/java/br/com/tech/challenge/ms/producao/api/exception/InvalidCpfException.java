@@ -1,4 +1,4 @@
-package br.com.tech.challenge.api.exception;
+package br.com.tech.challenge.ms.producao.api.exception;
 
 public class InvalidCpfException extends RuntimeException {
 

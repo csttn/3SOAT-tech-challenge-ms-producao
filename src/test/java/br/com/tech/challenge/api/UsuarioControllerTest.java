@@ -1,10 +1,10 @@
 package br.com.tech.challenge.api;
 
-import br.com.tech.challenge.domain.dto.CredencialDTO;
-import br.com.tech.challenge.domain.dto.TokenDTO;
-import br.com.tech.challenge.domain.dto.UsuarioDTO;
-import br.com.tech.challenge.domain.enums.Role;
-import br.com.tech.challenge.utils.PasswordUtils;
+
+import br.com.tech.challenge.ms.producao.domain.dto.CredencialDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.TokenDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.UsuarioDTO;
+import br.com.tech.challenge.ms.producao.domain.enums.Role;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;

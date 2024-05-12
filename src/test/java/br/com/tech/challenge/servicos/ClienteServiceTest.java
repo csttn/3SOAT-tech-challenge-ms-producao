@@ -1,9 +1,11 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.api.exception.ClienteAlreadyExistsException;
-import br.com.tech.challenge.bd.repositorios.ClienteRepository;
-import br.com.tech.challenge.domain.dto.ClienteDTO;
-import br.com.tech.challenge.domain.entidades.Cliente;
+
+import br.com.tech.challenge.ms.producao.api.exception.ClienteAlreadyExistsException;
+import br.com.tech.challenge.ms.producao.bd.repositorios.ClienteRepository;
+import br.com.tech.challenge.ms.producao.domain.dto.ClienteDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.Cliente;
+import br.com.tech.challenge.ms.producao.servicos.ClienteService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

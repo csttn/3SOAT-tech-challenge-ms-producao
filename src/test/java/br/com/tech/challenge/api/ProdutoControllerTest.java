@@ -1,10 +1,11 @@
 package br.com.tech.challenge.api;
 
-import br.com.tech.challenge.domain.dto.ProdutoDTO;
-import br.com.tech.challenge.domain.dto.ProdutoUpdateDTO;
-import br.com.tech.challenge.domain.entidades.Categoria;
-import br.com.tech.challenge.domain.entidades.Produto;
-import br.com.tech.challenge.servicos.ProdutoService;
+
+import br.com.tech.challenge.ms.producao.domain.dto.ProdutoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.ProdutoUpdateDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.Categoria;
+import br.com.tech.challenge.ms.producao.domain.entidades.Produto;
+import br.com.tech.challenge.ms.producao.servicos.ProdutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterAll;

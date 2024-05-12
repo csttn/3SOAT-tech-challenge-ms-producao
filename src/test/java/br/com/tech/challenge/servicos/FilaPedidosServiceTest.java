@@ -1,8 +1,10 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.bd.repositorios.FilaPedidosRepository;
-import br.com.tech.challenge.domain.entidades.FilaPedidos;
-import br.com.tech.challenge.domain.enums.StatusPedido;
+
+import br.com.tech.challenge.ms.producao.bd.repositorios.FilaPedidosRepository;
+import br.com.tech.challenge.ms.producao.domain.entidades.FilaPedidos;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.servicos.FilaPedidosService;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

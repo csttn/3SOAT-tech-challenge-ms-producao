@@ -1,6 +1,7 @@
-package br.com.tech.challenge.utils;
+package br.com.tech.challenge.ms.producao.utils;
 
-import br.com.tech.challenge.api.exception.InvalidCpfException;
+
+import br.com.tech.challenge.ms.producao.api.exception.InvalidCpfException;
 
 public class CpfUtils {
 

@@ -1,9 +1,9 @@
 package br.com.tech.challenge.api;
 
-import br.com.tech.challenge.domain.dto.ClienteDTO;
-import br.com.tech.challenge.domain.dto.RequestClienteCpfDTO;
-import br.com.tech.challenge.domain.entidades.Cliente;
-import br.com.tech.challenge.servicos.ClienteService;
+import br.com.tech.challenge.ms.producao.domain.dto.ClienteDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.RequestClienteCpfDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.Cliente;
+import br.com.tech.challenge.ms.producao.servicos.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;

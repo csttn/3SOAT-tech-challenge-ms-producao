@@ -1,18 +1,21 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.api.exception.ObjectNotFoundException;
-import br.com.tech.challenge.api.exception.StatusPedidoInvalidoException;
-import br.com.tech.challenge.bd.repositorios.ClienteRepository;
-import br.com.tech.challenge.bd.repositorios.PedidoRepository;
-import br.com.tech.challenge.domain.dto.ClienteDTO;
-import br.com.tech.challenge.domain.dto.PedidoDTO;
-import br.com.tech.challenge.domain.dto.ProdutoDTO;
-import br.com.tech.challenge.domain.dto.StatusPedidoDTO;
-import br.com.tech.challenge.domain.entidades.Categoria;
-import br.com.tech.challenge.domain.entidades.Cliente;
-import br.com.tech.challenge.domain.entidades.Pedido;
-import br.com.tech.challenge.domain.entidades.Produto;
-import br.com.tech.challenge.domain.enums.StatusPedido;
+
+import br.com.tech.challenge.ms.producao.api.exception.ObjectNotFoundException;
+import br.com.tech.challenge.ms.producao.api.exception.StatusPedidoInvalidoException;
+import br.com.tech.challenge.ms.producao.bd.repositorios.PedidoRepository;
+import br.com.tech.challenge.ms.producao.domain.dto.ClienteDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.PedidoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.ProdutoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.StatusPedidoDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.Categoria;
+import br.com.tech.challenge.ms.producao.domain.entidades.Cliente;
+import br.com.tech.challenge.ms.producao.domain.entidades.Pedido;
+import br.com.tech.challenge.ms.producao.domain.entidades.Produto;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.servicos.ClienteService;
+import br.com.tech.challenge.ms.producao.servicos.PedidoService;
+import br.com.tech.challenge.ms.producao.servicos.ProdutoService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,115 +53,13 @@ class PedidoServiceTest {
     @Mock
     private ClienteService clienteService;
 
-    @Mock
-    private PagamentoService pagamentoService;
 
     @Mock
     private ModelMapper mapper;
 
     PedidoServiceTest() {
         MockitoAnnotations.openMocks(this);
-        pedidoService = new PedidoService(pedidoRepository, produtoService, clienteService, pagamentoService, mapper);
-    }
-
-    @DisplayName("Deve criar um pedido com sucesso")
-    @Test
-    void shouldCreatePedidoSuccess() {
-
-        var returnedPedido = setPedido();
-        var returnedPedidoDTO = setPedidoDTO();
-
-        when(pedidoRepository.save(any())).thenReturn(returnedPedido);
-        when(clienteService.existsById(any())).thenReturn(Boolean.TRUE);
-        when(produtoService.findById(any())).thenReturn(Optional.of(setProduto()));
-        when(mapper.map(any(), any(Type.class))).thenReturn(Collections.singletonList(setProduto()));
-
-        var pedido = pedidoService.save(returnedPedidoDTO);
-
-        assertEquals(returnedPedido.getId(), pedido.getId());
-        assertEquals(returnedPedido.getCliente(), pedido.getCliente());
-        assertEquals(returnedPedido.getProdutos(), pedido.getProdutos());
-        assertEquals(returnedPedido.getValorTotal(), pedido.getValorTotal());
-        assertEquals(returnedPedido.getStatusPedido(), pedido.getStatusPedido());
-        assertEquals(returnedPedido.getSenhaRetirada(), pedido.getSenhaRetirada());
-        assertEquals(returnedPedido.getId().getClass(), pedido.getId().getClass());
-        assertEquals(returnedPedido.getCliente().getClass(), pedido.getCliente().getClass());
-        assertEquals(returnedPedido.getProdutos().getClass(), pedido.getProdutos().getClass());
-        assertEquals(returnedPedido.getValorTotal().getClass(), pedido.getValorTotal().getClass());
-        assertEquals(returnedPedido.getStatusPedido().getClass(), pedido.getStatusPedido().getClass());
-        assertEquals(returnedPedido.getSenhaRetirada().getClass(), pedido.getSenhaRetirada().getClass());
-        assertEquals(returnedPedido.getDataHora(), pedido.getDataHora());
-    }
-
-    @DisplayName("Deve criar pedido sem informar cliente")
-    @Test
-    void shouldValidateNullClient() {
-
-        var returnedPedido = setPedidoSemCliente();
-        var returnedPedidoDTO = setPedidoSemClienteDTO();
-
-        when(pedidoRepository.save(any())).thenReturn(returnedPedido);
-        when(clienteService.existsById(any())).thenReturn(Boolean.TRUE);
-        when(produtoService.findById(any())).thenReturn(Optional.of(setProduto()));
-        when(mapper.map(any(), any(Type.class))).thenReturn(Collections.singletonList(setProduto()));
-
-        var pedido = pedidoService.save(returnedPedidoDTO);
-
-        assertEquals(returnedPedido.getId(), pedido.getId());
-        assertEquals(returnedPedido.getProdutos(), pedido.getProdutos());
-        assertEquals(returnedPedido.getValorTotal(), pedido.getValorTotal());
-        assertEquals(returnedPedido.getStatusPedido(), pedido.getStatusPedido());
-        assertEquals(returnedPedido.getSenhaRetirada(), pedido.getSenhaRetirada());
-        assertEquals(returnedPedido.getId().getClass(), pedido.getId().getClass());
-        assertEquals(returnedPedido.getCliente().getClass(), pedido.getCliente().getClass());
-        assertEquals(returnedPedido.getProdutos().getClass(), pedido.getProdutos().getClass());
-        assertEquals(returnedPedido.getValorTotal().getClass(), pedido.getValorTotal().getClass());
-        assertEquals(returnedPedido.getStatusPedido().getClass(), pedido.getStatusPedido().getClass());
-        assertEquals(returnedPedido.getSenhaRetirada().getClass(), pedido.getSenhaRetirada().getClass());
-
-    }
-
-    @DisplayName("Deve lançar exceção ao criar um pedido com cliente não encontrado")
-    @Test
-    void shouldValidateExistingClient() {
-        var returnedPedidoDTO = setPedidoDTO();
-        try {
-            when(clienteService.existsById(any())).thenReturn(Boolean.FALSE);
-            pedidoService.save(returnedPedidoDTO);
-        } catch (Exception e) {
-            assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals("Cliente não encontrado: " + returnedPedidoDTO.getCliente().getId(), e.getMessage());
-        }
-    }
-
-@DisplayName("Deve lançar exceção ao criar um pedido com lista de produtos vazia")
-@Test
-void shouldValidateEmptyListProductsOrder() {
-        try {
-            var returnedPedidoDTO = setPedidoDTO();
-            when(clienteService.existsById(any())).thenReturn(Boolean.TRUE);
-            returnedPedidoDTO.setProdutos(List.of());
-            pedidoService.save(returnedPedidoDTO);
-        } catch (Exception e) {
-            assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals("Lista de produtos vazia", e.getMessage());
-        }
-}
-
-    @DisplayName("Deve lançar exceção ao criar um pedido com produto não encontrado")
-    @Test
-    void shouldValidateProductExisting() {
-        var returnedPedidoDTO = setPedidoDTO();
-        try {
-            when(clienteService.existsById(any())).thenReturn(Boolean.TRUE);
-            when(produtoService.findById(any())).thenReturn(Optional.empty());
-            when(mapper.map(any(), any(Type.class))).thenReturn(Collections.singletonList(setProduto()));
-            pedidoService.save(returnedPedidoDTO);
-        } catch (Exception e) {
-            assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals("Produto não encontrado " + returnedPedidoDTO
-                    .getProdutos().get(0).getId(), e.getMessage());
-        }
+        pedidoService = new PedidoService(pedidoRepository, produtoService, clienteService, mapper);
     }
 
 

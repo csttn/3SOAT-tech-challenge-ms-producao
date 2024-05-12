@@ -7,7 +7,7 @@ plugins {
 	id "org.sonarqube" version "4.2.1.3168"
 }
 
-group = 'br.com.tech.challenge'
+group = 'br.com.tech.challenge.ms.producao'
 version = '1.0.0'
 
 java {
@@ -24,6 +24,10 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('springCloudVersion', "2022.0.3")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -31,7 +35,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.1.1'
 	implementation 'org.modelmapper:modelmapper:2.4.4'
-	implementation group: 'org.springframework.security', name: 'spring-security-crypto'
+
 
 	// Spring Validation
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -43,6 +47,10 @@ dependencies {
 	//	Postgress
 	implementation 'org.postgresql:postgresql:42.2.27'
 	implementation 'org.flywaydb:flyway-core:9.8.1'
+
+	// mongo
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
 
 	//	Lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -66,14 +74,14 @@ dependencies {
 
 	// HttpClient
 	implementation 'org.apache.httpcomponents.client5:httpclient5'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.0.3'
 
-	// JWT
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+}
 
-	// Security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 flyway {

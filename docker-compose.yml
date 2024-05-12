@@ -53,6 +53,16 @@ services:
       - postgres
     restart: unless-stopped
 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mongo
+
   tech-challenge:
     image: stylefelix/tech-challenge
     container_name: tech-challenge_container
@@ -88,10 +98,13 @@ services:
 networks:
   postgres:
     driver: bridge
+  mongo:
+    driver: bridge
 
 volumes:
   redis:
   postgres:
+  mongodb_data:
   pgadmin:
   tech-challenge:
   sonarqube_data:

@@ -1,18 +1,15 @@
 package br.com.tech.challenge.api;
 
 
-import br.com.tech.challenge.domain.dto.ClienteDTO;
-import br.com.tech.challenge.domain.dto.PedidoDTO;
-import br.com.tech.challenge.domain.dto.ProdutoDTO;
-import br.com.tech.challenge.domain.dto.StatusPedidoDTO;
-import br.com.tech.challenge.domain.entidades.Categoria;
-import br.com.tech.challenge.domain.entidades.Cliente;
-import br.com.tech.challenge.domain.entidades.FilaPedidos;
-import br.com.tech.challenge.domain.entidades.Produto;
-import br.com.tech.challenge.domain.entidades.Pedido;
-import br.com.tech.challenge.domain.enums.StatusPedido;
-import br.com.tech.challenge.servicos.FilaPedidosService;
-import br.com.tech.challenge.servicos.PedidoService;
+
+import br.com.tech.challenge.ms.producao.domain.dto.ClienteDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.PedidoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.ProdutoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.StatusPedidoDTO;
+import br.com.tech.challenge.ms.producao.domain.entidades.*;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.servicos.FilaPedidosService;
+import br.com.tech.challenge.ms.producao.servicos.PedidoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterAll;

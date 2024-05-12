@@ -1,4 +1,4 @@
-package br.com.tech.challenge.domain.enums;
+package br.com.tech.challenge.ms.producao.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

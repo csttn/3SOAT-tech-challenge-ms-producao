@@ -1,4 +1,4 @@
-package br.com.tech.challenge.domain.entidades;
+package br.com.tech.challenge.ms.producao.domain.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
