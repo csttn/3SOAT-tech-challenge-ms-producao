@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id "org.flywaydb.flyway" version "9.8.1"
 	id 'jacoco'
 	id "org.sonarqube" version "4.2.1.3168"
 }
@@ -33,7 +32,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.1.1'
 	implementation 'org.modelmapper:modelmapper:2.4.4'
 
 
@@ -43,10 +41,6 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.7.1'
 	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 	implementation 'org.apache.commons:commons-lang3'
-
-	//	Postgress
-	implementation 'org.postgresql:postgresql:42.2.27'
-	implementation 'org.flywaydb:flyway-core:9.8.1'
 
 	// mongo
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -69,9 +63,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'org.springframework.data:spring-data-redis'
 
-	// H2
-	testImplementation 'com.h2database:h2:2.2.224'
-
 	// HttpClient
 	implementation 'org.apache.httpcomponents.client5:httpclient5'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.0.3'
@@ -82,13 +73,6 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
-}
-
-flyway {
-	url = 'jdbc:postgresql://localhost:5432/tech_challenge'
-	user = 'tech'
-	password = 'tech_passwd'
-	cleanDisabled = false
 }
 
 tasks.named('test') {
@@ -137,8 +121,8 @@ jacocoTestCoverageVerification {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "tech-challenge"
-		property "sonar.projectName", "tech-challenge"
+		property "sonar.projectKey", "tech-challenge-ms-producao"
+		property "sonar.projectName", "tech-challenge-ms-producao"
 		property "sonar.host.url", "http://localhost:9000"
 		property 'sonar.coverage.jacoco.xmlReportPaths', "build/reports/jacoco/test/jacocoTestReport.xml"
 	}

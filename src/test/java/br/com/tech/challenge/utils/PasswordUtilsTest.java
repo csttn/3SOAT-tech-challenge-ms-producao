@@ -1,5 +1,6 @@
 package br.com.tech.challenge.utils;
 
+import br.com.tech.challenge.ms.producao.utils.PasswordUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;

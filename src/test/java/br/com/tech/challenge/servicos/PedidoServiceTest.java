@@ -1,137 +1,164 @@
 package br.com.tech.challenge.servicos;
 
-
+import br.com.tech.challenge.ms.producao.api.client.PedidosClient;
 import br.com.tech.challenge.ms.producao.api.exception.ObjectNotFoundException;
 import br.com.tech.challenge.ms.producao.api.exception.StatusPedidoInvalidoException;
-import br.com.tech.challenge.ms.producao.bd.repositorios.PedidoRepository;
+import br.com.tech.challenge.ms.producao.bd.repositorios.FilaPedidosRepository;
 import br.com.tech.challenge.ms.producao.domain.dto.ClienteDTO;
 import br.com.tech.challenge.ms.producao.domain.dto.PedidoDTO;
 import br.com.tech.challenge.ms.producao.domain.dto.ProdutoDTO;
 import br.com.tech.challenge.ms.producao.domain.dto.StatusPedidoDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.external.FilaPedidosDTO;
 import br.com.tech.challenge.ms.producao.domain.entidades.Categoria;
-import br.com.tech.challenge.ms.producao.domain.entidades.Cliente;
-import br.com.tech.challenge.ms.producao.domain.entidades.Pedido;
-import br.com.tech.challenge.ms.producao.domain.entidades.Produto;
 import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
-import br.com.tech.challenge.ms.producao.servicos.ClienteService;
 import br.com.tech.challenge.ms.producao.servicos.PedidoService;
-import br.com.tech.challenge.ms.producao.servicos.ProdutoService;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageImpl;
 
-import java.lang.reflect.Type;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import org.modelmapper.ModelMapper;
 
 class PedidoServiceTest {
 
     @Mock
+    private FilaPedidosRepository filaPedidosRepository;
+
+    @Mock
+    private PedidosClient pedidosClient;
+
+    @Mock
     private final PedidoService pedidoService;
-
-    @Mock
-    private PedidoRepository pedidoRepository;
-
-    @Mock
-    private ProdutoService produtoService;
-
-    @Mock
-    private ClienteService clienteService;
-
 
     @Mock
     private ModelMapper mapper;
 
     PedidoServiceTest() {
         MockitoAnnotations.openMocks(this);
-        pedidoService = new PedidoService(pedidoRepository, produtoService, clienteService, mapper);
+        pedidoService = new PedidoService(filaPedidosRepository,mapper, pedidosClient);
     }
 
-
-    @DisplayName("Nao deve atualizar status do pedido quando for CANCELADO")
     @Test
-    void shouldThrowStatusPedidoInvalidoExceptionWhenCancelPedido() {
+    void testUpdateStatusPedidoEmPreparacao() {
+        // Mocking data
         Long pedidoId = 1L;
-        StatusPedidoDTO novoStatusDTO = new StatusPedidoDTO(StatusPedido.CANCELADO);
+        StatusPedidoDTO novoStatus = new StatusPedidoDTO(StatusPedido.EM_PREPARACAO);
+        PedidoDTO pedidoDTO = this.setPedidoDTO();
+        pedidoDTO.setId(pedidoId);
 
-        Pedido pedido = new Pedido();
-        Optional<Pedido> pedidoOptional = Optional.of(pedido);
 
-        when(pedidoRepository.findById(pedidoId)).thenReturn(pedidoOptional);
+        FilaPedidosDTO filaPedidosDTO = this.setFilaPedido();
+        filaPedidosDTO.setStatusPedido(novoStatus.getStatusPedido());
 
-        assertThrows(StatusPedidoInvalidoException.class, () -> pedidoService.updateStatus(pedidoId, novoStatusDTO));
+        // Mocking external service calls
+        when(pedidosClient.findById(pedidoId)).thenReturn(pedidoDTO);
+        when(filaPedidosRepository.findById(any())).thenReturn(Optional.ofNullable(this.setFilaPedido()));
+        doNothing().when(filaPedidosRepository).deleteById(any());
+        when(filaPedidosRepository.save(any())).thenReturn(filaPedidosDTO);
+
+        // Calling the method to be tested
+        PedidoDTO result = pedidoService.updateStatus(pedidoId, novoStatus);
+
+        // Assertions
+        assertEquals(StatusPedido.EM_PREPARACAO, result.getStatusPedido());
     }
 
-
-    @DisplayName("Deve retornar uma lista paginada de pedidos quando existem pedidos")
     @Test
-    void shouldReturnPaginatedListOfPedidosWhenPedidosExist() {
-        List<Pedido> pedidosSimulados = setPedidoList();
+    void testUpdateStatusPedidoCancelado() {
+        // Mocking data
+        Long pedidoId = 1L;
+        StatusPedidoDTO novoStatus = new StatusPedidoDTO(StatusPedido.CANCELADO);
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        pedidoDTO.setId(pedidoId);
 
-        when(pedidoRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(pedidosSimulados));
 
-        Page<PedidoDTO> result = pedidoService.list(0, 3);
+        FilaPedidosDTO filaPedidosDTO = this.setFilaPedido();
+        filaPedidosDTO.setStatusPedido(novoStatus.getStatusPedido());
 
-        Assertions.assertThat(result.getContent()).hasSize(3);
+        // Mocking external service calls
+        when(pedidosClient.findById(pedidoId)).thenReturn(pedidoDTO);
+        when(pedidosClient.save(pedidoDTO)).thenReturn(pedidoDTO);
+        when(filaPedidosRepository.findById(any())).thenReturn(Optional.ofNullable(this.setFilaPedido()));
+        doNothing().when(filaPedidosRepository).deleteById(any());
+        when(filaPedidosRepository.save(any())).thenReturn(filaPedidosDTO);
 
+
+        // Calling the method to be tested
+        PedidoDTO result = pedidoService.updateStatus(pedidoId, novoStatus);
+
+        // Assertions
+        assertEquals(StatusPedido.CANCELADO, result.getStatusPedido());
     }
 
-    @DisplayName("Deve retornar uma lista vazia de pedidos quando não houver pedidos")
     @Test
-    void shouldReturnEmptyListOfPedidosWhenNoPedidosExist() {
-        when(pedidoRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(Collections.emptyList()));
+    void testAtualizaStatusDePedidoQueNaoExisteNaBase() {
+        // Mocking data
+        Long pedidoId = 1L;
+        StatusPedidoDTO novoStatus = new StatusPedidoDTO(StatusPedido.EM_PREPARACAO);
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        pedidoDTO.setId(pedidoId);
 
-        Page<PedidoDTO> result = pedidoService.list(0, 10);
-        Assertions.assertThat(result.getContent()).isEmpty();
+
+        FilaPedidosDTO filaPedidosDTO = this.setFilaPedido();
+        filaPedidosDTO.setStatusPedido(novoStatus.getStatusPedido());
+
+        // Mocking external service calls
+        when(pedidosClient.findById(pedidoId)).thenReturn(pedidoDTO);
+        when(pedidosClient.save(pedidoDTO)).thenReturn(pedidoDTO);
+        when(filaPedidosRepository.findById(any())).thenReturn(Optional.empty());
+        doNothing().when(filaPedidosRepository).deleteById(any());
+        when(filaPedidosRepository.save(any())).thenReturn(filaPedidosDTO);
+
+
+        // Assertions
+        assertThrows(ObjectNotFoundException.class, () -> pedidoService.updateStatus(pedidoId, novoStatus));
     }
 
 
-        private Pedido setPedido() {
-        return Pedido.builder()
-                .id(1L)
-                .senhaRetirada(123456)
-                .cliente(setCliente())
-                .produtos(List.of(setProduto()))
-                .valorTotal(BigDecimal.valueOf(5.00))
-                .statusPedido(StatusPedido.RECEBIDO)
-                .dataHora(LocalDateTime.now())
-                .build();
+    @Test
+    void testUpdateStatusPedidoNotFound() {
+        // Mocking data
+        Long pedidoId = 1L;
+        StatusPedidoDTO novoStatus = new StatusPedidoDTO(StatusPedido.FINALIZADO);
+
+        // Mocking external service calls
+        when(pedidosClient.findById(pedidoId)).thenReturn(null);
+
+        // Assertions
+        assertThrows(ObjectNotFoundException.class, () -> pedidoService.updateStatus(pedidoId, novoStatus));
+        verifyNoInteractions(filaPedidosRepository);
     }
 
-    private Pedido setPedidoSemCliente() {
-        return Pedido.builder()
-                .id(1L)
-                .senhaRetirada(123456)
-                .cliente(new Cliente())
-                .produtos(List.of(setProduto()))
-                .valorTotal(BigDecimal.valueOf(5.00))
-                .statusPedido(StatusPedido.RECEBIDO)
-                .build();
+    @Test
+    void testUpdateStatusPedidoInvalido() {
+        // Mocking data
+        Long pedidoId = 1L;
+        StatusPedidoDTO novoStatus = new StatusPedidoDTO();
+
+        // Mocking external service calls
+        when(pedidosClient.findById(pedidoId)).thenReturn(null);
+
+        // Assertions
+        assertThrows(StatusPedidoInvalidoException.class, () -> pedidoService.updateStatus(pedidoId, novoStatus));
+        verifyNoInteractions(filaPedidosRepository);
     }
 
-    private PedidoDTO setPedidoSemClienteDTO() {
-        return PedidoDTO.builder()
-                .id(1L)
+
+    private FilaPedidosDTO setFilaPedido() {
+        return FilaPedidosDTO.builder()
+                .id("3")
                 .senhaRetirada(123456)
-                .cliente(new ClienteDTO())
-                .produtos(List.of(setProdutoDTO()))
-                .valorTotal(BigDecimal.valueOf(5.00))
                 .statusPedido(StatusPedido.RECEBIDO)
+                .nomeCliente("Cliente 3")
                 .build();
     }
 
@@ -146,24 +173,8 @@ class PedidoServiceTest {
                 .build();
     }
 
-    private Produto setProduto() {
-        return Produto.builder()
-                .id(1L)
-                .descricao("Coca Cola")
-                .valorUnitario(BigDecimal.valueOf(5.00))
-                .categoria(setCategoria())
-                .build();
-    }
-
-    private Categoria setCategoria() {
-        return Categoria.builder()
-                .id(2L)
-                .descricao("Bebida")
-                .build();
-    }
-
-    private Cliente setCliente() {
-        return Cliente.builder()
+    private ClienteDTO setClienteDTO() {
+        return ClienteDTO.builder()
                 .id(1L)
                 .nome("Anthony Samuel Joaquim Teixeira")
                 .email("anthony.samuel.teixeira@said.adv.br")
@@ -180,23 +191,13 @@ class PedidoServiceTest {
                 .build();
     }
 
-    private ClienteDTO setClienteDTO() {
-        return ClienteDTO.builder()
-                .id(1L)
-                .nome("Anthony Samuel Joaquim Teixeira")
-                .email("anthony.samuel.teixeira@said.adv.br")
-                .cpf("143.025.400-95")
+    private Categoria setCategoria() {
+        return Categoria.builder()
+                .id(2L)
+                .descricao("Bebida")
                 .build();
     }
 
-    private List<Pedido> setPedidoList() {
-        List<Pedido> pedidos = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            Pedido pedido = new Pedido();
-            pedido.setId((long) i);
-            pedidos.add(pedido);
-        }
-        return pedidos;
-    }
+
 
 }

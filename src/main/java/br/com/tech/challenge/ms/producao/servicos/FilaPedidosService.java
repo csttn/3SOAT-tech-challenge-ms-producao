@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 public class FilaPedidosService {
 
 
-    @Autowired
-    FilaPedidosRepository filaPedidosRepository;
+
+   private final FilaPedidosRepository filaPedidosRepository;
 
     private final FilaPedidosClient filaPedidosClient;
 

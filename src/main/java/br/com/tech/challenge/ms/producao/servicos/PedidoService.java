@@ -5,29 +5,22 @@ import br.com.tech.challenge.ms.producao.api.client.PedidosClient;
 import br.com.tech.challenge.ms.producao.api.exception.ObjectNotFoundException;
 import br.com.tech.challenge.ms.producao.api.exception.StatusPedidoInvalidoException;
 import br.com.tech.challenge.ms.producao.bd.repositorios.FilaPedidosRepository;
-import br.com.tech.challenge.ms.producao.bd.repositorios.PedidoRepository;
 import br.com.tech.challenge.ms.producao.domain.dto.ClienteDTO;
 import br.com.tech.challenge.ms.producao.domain.dto.PedidoDTO;
-import br.com.tech.challenge.ms.producao.domain.dto.ProdutoDTO;
 import br.com.tech.challenge.ms.producao.domain.dto.StatusPedidoDTO;
 import br.com.tech.challenge.ms.producao.domain.dto.external.FilaPedidosDTO;
-import br.com.tech.challenge.ms.producao.domain.entidades.Pedido;
-import br.com.tech.challenge.ms.producao.domain.entidades.Produto;
+
 import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
-import br.com.tech.challenge.ms.producao.utils.PasswordUtils;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +28,7 @@ import java.util.stream.Collectors;
 public class PedidoService {
 
 
-    @Autowired
-    FilaPedidosRepository filaPedidosRepository;
-
+   private final FilaPedidosRepository filaPedidosRepository;
 
     private final ModelMapper mapper;
 
@@ -87,15 +78,6 @@ public class PedidoService {
             }
         }
         throw new StatusPedidoInvalidoException();
-    }
-
-    private ClienteDTO setClienteAnonimoDTO() {
-        return ClienteDTO.builder()
-                .id(99L)
-                .nome("Usuario Anonimo")
-                .email("")
-                .cpf("999.999.999-99")
-                .build();
     }
 
 }

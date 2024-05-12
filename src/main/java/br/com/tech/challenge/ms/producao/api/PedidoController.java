@@ -27,11 +27,11 @@ import java.util.List;
 @Tag(name = "Pedidos", description = "Endpoints para controle de Pedidos")
 public class PedidoController {
 
+
     private final PedidoService pedidoService;
 
     private final FilaPedidosService filaPedidosService;
 
-    private final ModelMapper mapper;
 
 
     @Operation(summary = "Lista a fila de pedidos", description = "Endpoint para listagem da fila de pedidos")

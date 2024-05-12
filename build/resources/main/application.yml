@@ -1,5 +1,5 @@
 application:
-  title: 3soat-tech_challenge
+  title: 3soat-tech-challenge-ms-producao
   version: 1.0.0
 
 server:
@@ -29,20 +29,6 @@ spring:
       host: localhost
     mongodb:
       uri: mongodb://localhost:27017/tech-challenge-producao
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/tech_challenge
-    hikari:
-      username: tech
-      password: tech_passwd
-  jpa:
-    show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: validate
-    properties:
-      dialect: org.hibernate.dialect.PostgreSQL9Dialect
-      use_jdbc_metadata_defaults: false
 
 logging:
   level:
