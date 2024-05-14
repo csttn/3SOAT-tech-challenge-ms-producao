@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: tech-challenge-java-ms-producao
-        image: stylefelix/tech-challenge-ms-producao-kubernetes:latest
+        image: csttn/tech-challenge-ms-producao:latest
         ports:
           - containerPort: 8081
             protocol: TCP
@@ -61,8 +61,8 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 8081
-      nodePort: 31808
-  type: LoadBalancer
+      nodePort: 31809
+  type: NodePort #  mudar para LoadBalancer quando subir para cloud
 
 ---
 

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'br.com.tech.challenge.ms.producao'
-version = '1.0.0'
+version = '1.0.1'
 
 java {
 	sourceCompatibility = '17'
@@ -58,10 +58,6 @@ dependencies {
 	// Spring Doc - Open API
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
 
-	// Redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
-	implementation 'org.springframework.data:spring-data-redis'
 
 	// HttpClient
 	implementation 'org.apache.httpcomponents.client5:httpclient5'

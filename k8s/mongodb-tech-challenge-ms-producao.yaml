@@ -2,12 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
-  labels:
-    app: mongodb
-  annotations:
-    author: G8 - 3SOAT/2023
-    name: tech-challenge-ms-producao-db-service
-    description: "This is the MongoDB database service for Tech Challenge"
 spec:
   replicas: 1
   selector:
@@ -20,34 +14,9 @@ spec:
     spec:
       containers:
         - name: mongodb
-          image: mongo
+          image: mongo:latest
           ports:
             - containerPort: 27017
-              protocol: TCP
-          resources:
-            limits:
-              memory: "300Mi"
-              cpu: "100m"
-          readinessProbe:
-            tcpSocket:
-              port: 27017
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          livenessProbe:
-            tcpSocket:
-              port: 27017
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          env:
-            - name: MONGO_INITDB_DATABASE
-              value: tech_challenge
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: root
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: root_passwd
-          volumeMounts:
-            - name: mongodb-storage
-              mountPath: /data/db # Caminho onde os dados serão armazenados no contêiner
 ---
 apiVersion: v1
 kind: Service
@@ -57,17 +26,6 @@ spec:
   selector:
     app: mongodb
   ports:
-    - protocol: "TCP"
+    - protocol: TCP
       port: 27017
       targetPort: 27017
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongodb-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
