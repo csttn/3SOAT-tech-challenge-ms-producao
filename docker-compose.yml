@@ -2,7 +2,6 @@
 version: '3.5'
 
 services:
-
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -14,23 +13,19 @@ services:
       - mongo
 
   tech-challenge:
-    image: stylefelix/tech-challenge
+    image: csttn/tech-challenge-ms-producao
     container_name: tech-challenge_container
     restart: on-failure
     build:
       context: .
       dockerfile: Dockerfile
-    links:
-      - redis
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
+      mongodb:
         condition: service_healthy
     networks:
-      - postgres
+      - mongo
 
   sonarqube:
     image: sonarqube
@@ -42,18 +37,13 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
     ports:
       - "9000:9000"
-    networks:
-      - postgres
 
 networks:
-  postgres:
-    driver: bridge
   mongo:
     driver: bridge
 
 volumes:
   mongodb_data:
-  tech-challenge:
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
-@FeignClient(name = "cliente-api", url = "http://localhost:8080") // Ajustar a URL conforme necessário
+@FeignClient(name = "cliente-api", url = "${pedidos.api.url}")
 public interface ClienteClient {
     @PostMapping("/clientes/check-in")
     Optional<Cliente> checkInCliente(@RequestBody ClienteCheckInDTO request);

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 
-@FeignClient(name = "pedidos", url = "http://localhost:8080") // Ajuste a URL conforme necessário
+@FeignClient(name = "pedidos", url = "${pedidos.api.url}")
 public interface PedidosClient {
 
     @GetMapping("/pedidos")

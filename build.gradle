@@ -67,6 +67,14 @@ dependencies {
 	implementation 'org.apache.httpcomponents.client5:httpclient5'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.0.3'
 
+
+	// Cucumber
+	implementation 'io.cucumber:cucumber-java:4.8.1'
+	implementation 'io.cucumber:cucumber-spring:4.8.1'
+	implementation 'io.cucumber:cucumber-core:4.8.1'
+	implementation 'io.cucumber:cucumber-testng:4.8.1'
+	testImplementation 'io.cucumber:cucumber-junit:7.0.0'
+
 }
 
 dependencyManagement {
@@ -107,17 +115,40 @@ jacocoTestCoverageVerification {
 				minimum = 0.7
 			}
 			excludes = [
-					'br.com.tech.challenge.domain.dto.*',
-					'br.com.tech.challenge.domain.entidades.*',
-					'br.com.tech.challenge.domain.enums.*',
-					'br.com.tech.challenge.config.*',
-					'br.com.tech.challenge.api.exception.*',
-					'br.com.tech.challenge.bd.repositorios.*',
-					'br.com.tech.challenge.TechChallengeApplication'
+					'br.com.tech.challenge.ms.producao.domain.dto.*',
+					'br.com.tech.challenge.ms.producao.domain.entidades.*',
+					'br.com.tech.challenge.ms.producao.domain.enums.*',
+					'br.com.tech.challenge.ms.producao.config.*',
+					'br.com.tech.challenge.ms.producao.api.exception.*',
+					'br.com.tech.challenge.ms.producao.bd.repositorios.*',
+					'br.com.tech.challenge.ms.producao.TechChallengeApplication',
+					'br.com.tech.challenge.ms.producao.sua.nova.classe.*'
 			]
 		}
 	}
 }
+
+configurations {
+	cucumberRuntime {
+		extendsFrom testImplementation
+	}
+}
+
+task cucumberCli() {
+	dependsOn assemble, testClasses
+	doLast {
+		javaexec {
+			main = "io.cucumber.core.cli.Main"
+			classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+			args = [
+					'--plugin', 'pretty',
+					'--plugin', 'html:target/cucumber-report.html',
+					'--glue', 'com.baeldung.cucumber',
+					'src/test/resources']
+		}
+	}
+}
+
 
 sonar {
 	properties {
