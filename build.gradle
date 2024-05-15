@@ -148,10 +148,10 @@ task cucumberCli() {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "csttn_3SOAT-tech-challenge-ms-producao"
+		property "sonar.projectKey",  "cleyto-ms-producao_tech-challenge"
 		property "sonar.projectName", "tech-challenge-ms-producao"
 		property 'sonar.coverage.jacoco.xmlReportPaths', "build/reports/jacoco/test/jacocoTestReport.xml"
-		property "sonar.organization", "csttn"
+		property "sonar.organization", "cleyto-ms-producao"
 		property "sonar.host.url", "https://sonarcloud.io/"
 	}
 }
