@@ -1,0 +1,42 @@
+application:
+  title: 3soat-tech-challenge-ms-producao
+  version: 1.0.1
+
+server:
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    disable-swagger-default-url: true
+    path: /swagger-ui.html
+  packagesToScan: br.com.tech.challenge.api
+
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: basic
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/tech-challenge-producao
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          client:
+            RestTemplate: DEBUG
+      apache:
+        http: DEBUG
+    httpclient:
+      wire: DEBUG
+
+pedidos:
+  api:
+    url: http://localhost:8080

@@ -1,0 +1,156 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'jacoco'
+	id "org.sonarqube" version "4.2.1.3168"
+}
+
+group = 'br.com.tech.challenge.ms.producao'
+version = '1.0.1'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2022.0.3")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.modelmapper:modelmapper:2.4.4'
+
+
+	// Spring Validation
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.7.1'
+	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+	implementation 'org.apache.commons:commons-lang3'
+
+	// mongo
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+
+	//	Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+
+	// Spring Retry
+	implementation 'org.springframework.retry:spring-retry:2.0.3'
+
+	// Spring Doc - Open API
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
+
+
+	// HttpClient
+	implementation 'org.apache.httpcomponents.client5:httpclient5'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.0.3'
+
+
+	// Cucumber
+	implementation 'io.cucumber:cucumber-java:4.8.1'
+	implementation 'io.cucumber:cucumber-spring:4.8.1'
+	implementation 'io.cucumber:cucumber-core:4.8.1'
+	implementation 'io.cucumber:cucumber-testng:4.8.1'
+	testImplementation 'io.cucumber:cucumber-junit:7.0.0'
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+	reports {
+		xml.required = true
+		csv.required = true
+		html.required = true
+	}
+}
+
+jacoco {
+	toolVersion = "0.8.9"
+	reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			element = 'CLASS'
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.7
+			}
+			excludes = [
+					'br.com.tech.challenge.ms.producao.domain.dto.*',
+					'br.com.tech.challenge.ms.producao.domain.entidades.*',
+					'br.com.tech.challenge.ms.producao.domain.enums.*',
+					'br.com.tech.challenge.ms.producao.config.*',
+					'br.com.tech.challenge.ms.producao.api.exception.*',
+					'br.com.tech.challenge.ms.producao.bd.repositorios.*',
+					'br.com.tech.challenge.ms.producao.TechChallengeApplication',
+					'br.com.tech.challenge.ms.producao.sua.nova.classe.*'
+			]
+		}
+	}
+}
+
+configurations {
+	cucumberRuntime {
+		extendsFrom testImplementation
+	}
+}
+
+task cucumberCli() {
+	dependsOn assemble, testClasses
+	doLast {
+		javaexec {
+			main = "io.cucumber.core.cli.Main"
+			classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+			args = [
+					'--plugin', 'pretty',
+					'--plugin', 'html:target/cucumber-report.html',
+					'--glue', 'com.baeldung.cucumber',
+					'src/test/resources']
+		}
+	}
+}
+
+
+sonar {
+	properties {
+		property "sonar.projectKey", "tech-challenge-ms-producao"
+		property "sonar.projectName", "tech-challenge-ms-producao"
+		property "sonar.host.url", "http://localhost:9000"
+		property 'sonar.coverage.jacoco.xmlReportPaths', "build/reports/jacoco/test/jacocoTestReport.xml"
+	}
+}

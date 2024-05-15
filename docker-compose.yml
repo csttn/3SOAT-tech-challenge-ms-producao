@@ -1,0 +1,49 @@
+
+version: '3.5'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mongo
+
+  tech-challenge:
+    image: csttn/tech-challenge-ms-producao
+    container_name: tech-challenge_container
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - mongo
+
+  sonarqube:
+    image: sonarqube
+    hostname: sonarqube
+    container_name: sonarqube
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+
+networks:
+  mongo:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
