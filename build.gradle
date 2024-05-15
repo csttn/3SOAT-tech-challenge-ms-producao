@@ -108,7 +108,7 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'LINE'
 				value = 'COVEREDRATIO'
-				minimum = 0.7
+				minimum = 0.8
 			}
 			excludes = [
 					'br.com.tech.challenge.ms.producao.domain.dto.*',
@@ -148,10 +148,10 @@ task cucumberCli() {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "cleyto-ms-producao_tech-challenge"
+		property "sonar.projectKey", "csttn_3SOAT-tech-challenge-ms-producao"
 		property "sonar.projectName", "tech-challenge-ms-producao"
 		property 'sonar.coverage.jacoco.xmlReportPaths', "build/reports/jacoco/test/jacocoTestReport.xml"
-		property "sonar.organization", "cleyto-ms-producao"
+		property "sonar.organization", "csttn"
 		property "sonar.host.url", "https://sonarcloud.io/"
 	}
 }
