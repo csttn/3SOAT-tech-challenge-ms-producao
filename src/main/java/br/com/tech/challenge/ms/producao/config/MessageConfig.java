@@ -1,4 +1,4 @@
-package br.com.tech.challenge.config;
+package br.com.tech.challenge.ms.producao.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

@@ -1,73 +1,133 @@
 package br.com.tech.challenge.servicos;
 
-import br.com.tech.challenge.bd.repositorios.FilaPedidosRepository;
-import br.com.tech.challenge.domain.entidades.FilaPedidos;
-import br.com.tech.challenge.domain.enums.StatusPedido;
-import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.DisplayName;
+import br.com.tech.challenge.ms.producao.api.client.FilaPedidosClient;
+import br.com.tech.challenge.ms.producao.api.client.PedidosClient;
+import br.com.tech.challenge.ms.producao.bd.repositorios.FilaPedidosRepository;
+import br.com.tech.challenge.ms.producao.domain.dto.external.FilaPedidosDTO;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.servicos.FilaPedidosService;
+import br.com.tech.challenge.ms.producao.servicos.PedidoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class FilaPedidosServiceTest {
-
-    private final FilaPedidosService filaPedidosService;
 
     @Mock
     private FilaPedidosRepository filaPedidosRepository;
 
+    @Mock
+    private FilaPedidosClient filaPedidosClient;
+
+    @Mock
+    private PedidosClient pedidosClient;
+
+    @Mock
+    private ModelMapper mapper;
+
+    @Mock
+    private FilaPedidosService filaPedidosService;
+
     FilaPedidosServiceTest() {
         MockitoAnnotations.openMocks(this);
-        filaPedidosService = new FilaPedidosService(filaPedidosRepository);
+        filaPedidosService = new FilaPedidosService(filaPedidosRepository, filaPedidosClient, pedidosClient, mapper);
     }
 
-    @DisplayName("Deve listar a fila de pedidos com sucesso")
     @Test
-    void shouldListFilaPedidosSuccess() {
-        var listaPedidos = new PageImpl<>(setFilaPedidos());
+    void testListFilaPedidos() {
+        List<FilaPedidosDTO> mockPedidos = new ArrayList<>();
+        mockPedidos.add(this.setFilaPedido());
+        mockPedidos.add(this.setFilaPedidoCancelado());
+        mockPedidos.add(this.setFilaPedidoEmPreparacao());
+        mockPedidos.add(this.setFilaPedidoFinalizado());
+        mockPedidos.add(this.setFilaPedidoPronto());
 
-        when(filaPedidosRepository.findAll(any(PageRequest.class))).thenReturn(listaPedidos);
+        when(pedidosClient.findAll(any())).thenReturn(new PageImpl<>(mockPedidos));
+        when(filaPedidosRepository.saveAll(any())).thenReturn(mockPedidos);
 
-        var listaPedidosReturned = filaPedidosService.listFilaPedidos(0, 10);
 
-        assertNotNull(listaPedidosReturned);
-        assertFalse(listaPedidosReturned.isEmpty());
-        assertEquals(1L, listaPedidosReturned.getTotalElements());
+        // Mocking external service calls
+
+        List<FilaPedidosDTO> result = filaPedidosService.listFilaPedidos(0, 10);
+
+        verify(filaPedidosRepository, times(1)).saveAll(anyList());
+
     }
 
-    @DisplayName("Deve listar a fila de pedidos vazia com sucesso")
     @Test
-    void shouldListEmptyFilaPedidos() {
-        when(filaPedidosRepository.findAll(any(PageRequest.class))).thenReturn(Page.empty());
+    void testListFilaPedidosWithStatusFilter() {
+        List<FilaPedidosDTO> mockPedidos = new ArrayList<>();
+        mockPedidos.add(this.setFilaPedido());
+        mockPedidos.add(this.setFilaPedidoCancelado());
+        mockPedidos.add(this.setFilaPedidoEmPreparacao());
+        mockPedidos.add(this.setFilaPedidoFinalizado());
+        mockPedidos.add(this.setFilaPedidoPronto());
+        when(pedidosClient.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(mockPedidos));
+        when(filaPedidosRepository.saveAll(any())).thenReturn(mockPedidos);
 
-        var listaPedidosReturned = filaPedidosService.listFilaPedidos(0, 10);
+        List<FilaPedidosDTO> result = filaPedidosService.listFilaPedidos(1, 10);
 
-        assertNotNull(listaPedidosReturned);
-        assertTrue(listaPedidosReturned.isEmpty());
-        assertEquals(0L, listaPedidosReturned.getTotalElements());
+        verify(filaPedidosRepository, times(1)).saveAll(anyList());
+
     }
 
-    private List<FilaPedidos> setFilaPedidos() {
-        var filaPedidos = FilaPedidos.builder()
-                .senhaRetirada(RandomUtils.nextInt())
-                .idCliente(1)
-                .statusPedido(StatusPedido.FINALIZADO.getDescricao())
+
+
+    private FilaPedidosDTO setFilaPedido() {
+        return FilaPedidosDTO.builder()
+                .id("3")
+                .senhaRetirada(123456)
+                .statusPedido(StatusPedido.RECEBIDO)
+                .nomeCliente("Cliente 3")
                 .build();
-
-        return Collections.singletonList(filaPedidos);
     }
 
+    private FilaPedidosDTO setFilaPedidoPronto() {
+        return FilaPedidosDTO.builder()
+                .id("3")
+                .senhaRetirada(123456)
+                .statusPedido(StatusPedido.RECEBIDO)
+                .nomeCliente("Cliente 3")
+                .build();
+    }
+
+    private FilaPedidosDTO setFilaPedidoEmPreparacao() {
+        return FilaPedidosDTO.builder()
+                .id("3")
+                .senhaRetirada(123456)
+                .statusPedido(StatusPedido.RECEBIDO)
+                .nomeCliente("Cliente 3")
+                .build();
+    }
+
+    private FilaPedidosDTO setFilaPedidoFinalizado() {
+        return FilaPedidosDTO.builder()
+                .id("3")
+                .senhaRetirada(123456)
+                .statusPedido(StatusPedido.FINALIZADO)
+                .nomeCliente("Cliente 3")
+                .build();
+    }
+
+    private FilaPedidosDTO setFilaPedidoCancelado() {
+        return FilaPedidosDTO.builder()
+                .id("3")
+                .senhaRetirada(123456)
+                .statusPedido(StatusPedido.CANCELADO)
+                .nomeCliente("Cliente 3")
+                .build();
+    }
 }

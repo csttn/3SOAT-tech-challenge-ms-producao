@@ -1,6 +1,7 @@
 package br.com.tech.challenge.utils;
 
-import br.com.tech.challenge.api.exception.InvalidCpfException;
+import br.com.tech.challenge.ms.producao.api.exception.InvalidCpfException;
+import br.com.tech.challenge.ms.producao.utils.CpfUtils;
 import br.com.tech.challenge.utils.args.CpfFormatArgs;
 import br.com.tech.challenge.utils.args.CpfInvalidArgs;
 import br.com.tech.challenge.utils.args.CpfValidArgs;

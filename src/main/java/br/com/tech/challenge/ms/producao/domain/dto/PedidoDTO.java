@@ -1,7 +1,7 @@
-package br.com.tech.challenge.domain.dto;
+package br.com.tech.challenge.ms.producao.domain.dto;
 
-import br.com.tech.challenge.domain.entidades.Pagamento;
-import br.com.tech.challenge.domain.enums.StatusPedido;
+import br.com.tech.challenge.ms.producao.domain.entidades.Pagamento;
+import br.com.tech.challenge.ms.producao.domain.enums.StatusPedido;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

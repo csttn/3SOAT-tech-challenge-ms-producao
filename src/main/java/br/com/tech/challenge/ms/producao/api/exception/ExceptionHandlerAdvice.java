@@ -1,6 +1,6 @@
-package br.com.tech.challenge.api.exception;
+package br.com.tech.challenge.ms.producao.api.exception;
 
-import br.com.tech.challenge.domain.dto.ResponseExceptionDTO;
+import br.com.tech.challenge.ms.producao.domain.dto.ResponseExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -95,14 +95,14 @@ public class ExceptionHandlerAdvice {
                         .build());
     }
 
-    @ExceptionHandler(UserOrPasswordInvalidException.class)
-    public ResponseEntity<ResponseExceptionDTO> handlePasswordInvalidException(UserOrPasswordInvalidException exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ResponseExceptionDTO.builder()
-                        .exceptionMessage(exception.getMessage())
-                        .messages(null)
-                        .statusCode(HttpStatus.UNAUTHORIZED.value())
-                        .build());
-    }
+//    @ExceptionHandler(UserOrPasswordInvalidException.class)
+//    public ResponseEntity<ResponseExceptionDTO> handlePasswordInvalidException(UserOrPasswordInvalidException exception) {
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                .body(ResponseExceptionDTO.builder()
+//                        .exceptionMessage(exception.getMessage())
+//                        .messages(null)
+//                        .statusCode(HttpStatus.UNAUTHORIZED.value())
+//                        .build());
+//    }
 
 }

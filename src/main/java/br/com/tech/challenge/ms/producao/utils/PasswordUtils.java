@@ -1,11 +1,10 @@
-package br.com.tech.challenge.utils;
+package br.com.tech.challenge.ms.producao.utils;
 
+import static java.lang.Integer.parseInt;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Random;
-
-import static java.lang.Integer.parseInt;
 
 @UtilityClass
 public class PasswordUtils {

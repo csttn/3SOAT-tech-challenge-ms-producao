@@ -1,7 +1,0 @@
-CREATE TABLE categoria (
-   id BIGINT NOT NULL,
-   descricao VARCHAR(255) NOT NULL,
-   PRIMARY KEY (id)
-);
-
-CREATE SEQUENCE categoria_seq START WITH 1 INCREMENT BY 1;

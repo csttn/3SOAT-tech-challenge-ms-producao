@@ -1,4 +1,4 @@
-package br.com.tech.challenge.config;
+package br.com.tech.challenge.ms.producao.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
