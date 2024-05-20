@@ -28,4 +28,4 @@ spring:
 
 pedidos:
   api:
-    url: http://172.22.16.1:31808
+    url: http://172.27.16.1:31808
