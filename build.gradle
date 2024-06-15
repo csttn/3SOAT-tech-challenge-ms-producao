@@ -3,7 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'jacoco'
-	id "org.sonarqube" version "4.2.1.3168"
+	id "org.sonarqube" version "4.4.1.3373"
 }
 
 group = 'br.com.tech.challenge.ms.producao'
@@ -108,7 +108,7 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'LINE'
 				value = 'COVEREDRATIO'
-				minimum = 0.7
+				minimum = 0.8
 			}
 			excludes = [
 					'br.com.tech.challenge.ms.producao.domain.dto.*',
@@ -148,9 +148,10 @@ task cucumberCli() {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "tech-challenge-ms-producao"
+		property "sonar.projectKey",  "cleyto-ms-producao_tech-challenge"
 		property "sonar.projectName", "tech-challenge-ms-producao"
-		property "sonar.host.url", "http://localhost:9000"
 		property 'sonar.coverage.jacoco.xmlReportPaths', "build/reports/jacoco/test/jacocoTestReport.xml"
+		property "sonar.organization", "cleyto-ms-producao"
+		property "sonar.host.url", "https://sonarcloud.io/"
 	}
 }
