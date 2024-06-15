@@ -19,7 +19,7 @@ spring:
         config:
           default:
             connectTimeout: 5000
-            readTimeout: 5000
+            readTimeout: 50000
             loggerLevel: basic
   data:
     mongodb:
